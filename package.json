@@ -1,0 +1,10 @@
+{
+  "name": "laahi-pharmacy-finder",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Accessible Finnish pharmacy finder using OpenStreetMap data.",
+  "scripts": { "test": "node --test", "start": "node scripts/serve.mjs" },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}
