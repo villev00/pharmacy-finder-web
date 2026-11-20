@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143f37">
+  <meta name="description" content="Löydä lähelläsi olevat apteekit Euroopassa sijainnilla tai koordinaateilla. Maksuton apteekkihaku OpenStreetMap-tiedoista.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ovp.dresel.systems; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'">
+  <title>Lähi — apteekki lähelläsi</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#search">Siirry hakuun</a>
+  <header class="site-header wrap">
+    <a class="wordmark" href="./" aria-label="Lähi etusivu"><span class="brand-symbol" aria-hidden="true">+</span> lähi<span class="brand-dot">.</span></a>
+    <span class="header-caption">APTEEKIT EUROOPASSA</span>
+    <a href="#privacy" class="quiet-link">Sijainti &amp; tietosuoja <span aria-hidden="true">↗</span></a>
+  </header>
+  <main class="wrap">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow"><span></span> PIENI APU ARKEEN</p>
+      <h1 id="page-title">Lähin apteekki.<br><em>Yksi asia vähemmän.</em></h1>
+      <p class="lead">Löydä apteekit läheltäsi ja jatka matkaa. Valitse sijainti, me järjestämme vaihtoehdot etäisyyden mukaan.</p>
+    </section>
+
+    <div class="finder-layout">
+      <section class="search-panel" id="search" aria-labelledby="search-title">
+        <div class="panel-heading"><span class="step-label">01 / SIJAINTI</span><span class="small-cross" aria-hidden="true">✳</span></div>
+        <h2 id="search-title">Mistä etsitään?</h2>
+        <p class="panel-copy">Käytä nykyistä sijaintiasi tai valitse hakukeskus itse. Haku käyttää Euroopan karttatietoja.</p>
+        <button class="location-button" id="locate" type="button"><span aria-hidden="true">◎</span> Käytä sijaintiani <span aria-hidden="true">↗</span></button>
+        <p class="location-note">Selain pyytää luvan vasta painikkeesta. Haku lähettää likimääräisen sijaintisi Overpass-palvelulle.</p>
+        <div class="separator"><span>tai hae koordinaateilla</span></div>
+        <form id="search-form">
+          <div class="coordinate-fields">
+            <div><label for="latitude">Leveysaste</label><input id="latitude" name="latitude" inputmode="decimal" autocomplete="off" placeholder="60.1699" required aria-describedby="coordinate-help"></div>
+            <div><label for="longitude">Pituusaste</label><input id="longitude" name="longitude" inputmode="decimal" autocomplete="off" placeholder="24.9384" required aria-describedby="coordinate-help"></div>
+          </div>
+          <p id="coordinate-help" class="field-hint">Desimaaliasteet. Myös desimaalipilkku käy.</p>
+          <div class="radius-row"><label for="radius">Hakuetäisyys</label><select id="radius" name="radius"><option value="1000">1 km</option><option value="5000" selected>5 km</option><option value="10000">10 km</option><option value="25000">25 km</option><option value="50000">50 km</option></select></div>
+          <button class="search-button" id="submit-search" type="submit">Etsi apteekit</button>
+        </form>
+        <div class="presets" aria-label="Kaupunkien keskustat"><span>Tai kokeile keskustasta</span><div><button type="button" data-city="helsinki">Helsinki</button><button type="button" data-city="tampere">Tampere</button><button type="button" data-city="turku">Turku</button><button type="button" data-city="oulu">Oulu</button></div></div>
+        <button id="cancel" class="cancel-button" type="button" hidden>Peruuta haku</button>
+      </section>
+
+      <section class="results-panel" id="results-section" aria-labelledby="results-title" aria-busy="false">
+        <div class="results-heading"><div><p class="eyebrow">02 / LÄHELLÄSI</p><h2 id="results-title">Apteekit odottavat löytämistä.</h2></div><span class="count-badge" id="result-count" hidden></span></div>
+        <p id="search-context" class="search-context">Valitse aluksi sijainti vasemmalta.</p>
+        <div id="status" role="status" aria-live="polite" aria-atomic="true"></div>
+        <div id="empty-state" class="empty-state">
+          <svg class="radar" viewBox="0 0 320 230" fill="none" aria-hidden="true"><ellipse cx="160" cy="130" rx="136" ry="79"/><ellipse cx="160" cy="130" rx="96" ry="55"/><ellipse cx="160" cy="130" rx="54" ry="31"/><path d="M24 130h272M160 51v158" class="radar-axis"/><path d="M160 52c-21 0-38 16-38 37 0 29 38 65 38 65s38-36 38-65c0-21-17-37-38-37Z" class="radar-pin"/><path d="M160 74v30m-15-15h30" class="radar-plus"/><circle cx="81" cy="147" r="6" class="radar-dot"/><circle cx="244" cy="111" r="6" class="radar-dot"/><circle cx="190" cy="181" r="4" class="radar-dot"/></svg>
+          <h3 id="empty-title">Läheltä löytyy.</h3><p id="empty-copy">Aloita haku nähdäksesi alueesi apteekit, osoitteet ja reittilinkit.</p>
+        </div>
+        <ol class="pharmacy-list" id="results"></ol>
+        <p class="result-footnote" id="result-footnote" hidden>Etäisyydet ovat linnuntietä. Tiedot ovat yhteisön ylläpitämiä: tarkista aukiolo ja palvelut apteekista ennen lähtöä.</p>
+      </section>
+    </div>
+
+    <section class="information-strip" aria-label="Näin palvelu toimii"><div><span class="info-number">01</span><h3>Sinun valitsemasi sijainti</h3><p>Ei jatkuvaa seurantaa. Voit aina hakea myös ilman sijaintilupaa.</p></div><div><span class="info-number">02</span><h3>Avoin kartta, oikeat paikat</h3><p>Haemme apteekit OpenStreetMapin Eurooppa-aineistosta valitsemaltasi alueelta.</p></div><div><span class="info-number">03</span><h3>Selkeä seuraava askel</h3><p>Lähin ensin. Avaa haluamasi apteekin reitti karttapalveluun.</p></div></section>
+
+    <details id="privacy" class="privacy"><summary>Sijaintisi ja tietosuoja</summary><div><p>Sovellus ei käytä analytiikkaa, mainoksia, evästeitä tai pysyvää paikallistallennusta. Tarkat koordinaatit säilyvät vain tämän välilehden muistissa etäisyyslaskentaa varten ja poistuvat, kun suljet tai lataat sivun uudelleen.</p><p>Haku lähettää koordinaatit kolmeen desimaaliin pyöristettyinä (noin sadan metrin tarkkuus), hakusäteen ja apteekkikyselyn <strong>ovp.dresel.systems</strong>-palvelulle Saksaan. Palvelu käsittelee myös verkkoyhteyden tavalliset tiedot, kuten IP-osoitteen, ja kertoo säilyttävänsä kysely- ja yhteystietoja 14 päivää. IPv4-yhteys kulkee lisäksi erillisen saksalaisen välityspalvelimen kautta. Tämä koskee myös käsin annettuja koordinaatteja ja kaupunkivalintoja. <a href="https://ovp.dresel.systems/impressum.html" target="_blank" rel="noopener noreferrer">Overpass-palvelun tietosuoja ↗</a></p><p>Reitti-linkki avaa Google Mapsin ja välittää sille apteekin koordinaatit, ei tässä sovelluksessa käyttämääsi lähtösijaintia. Google voi pyytää sijaintisi erikseen. Apteekin omat verkkosivut sekä karttalinkit ovat ulkoisia palveluita, joilla on omat tietosuojakäytäntönsä.</p><p>Sivuston julkaisualusta saa sivulatauksen tavanomaiset yhteystiedot. <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Pagesin tietosuojatiedot ↗</a></p></div></details>
+  </main>
+  <footer class="site-footer wrap"><span class="footer-brand">lähi.</span><p>Apteekkihaku avoimesta karttadatasta.</p><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMapin tekijät · ODbL ↗</a></footer>
+  <noscript><p class="noscript">Apteekkihaku tarvitsee JavaScriptin. Voit etsiä apteekkeja myös <a href="https://www.openstreetmap.org/">OpenStreetMapissa</a>.</p></noscript>
+</body>
+</html>
